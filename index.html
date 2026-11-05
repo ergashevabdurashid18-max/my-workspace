@@ -1,0 +1,689 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Abu's Personal Workspace</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap');
+        
+        body { 
+            font-family: 'Poppins', sans-serif; 
+            background-color: #ffffff; 
+            color: #1f2937; 
+            overflow-x: hidden; 
+            margin: 0;
+            transition: background 0.4s ease, color 0.4s ease;
+        }
+
+        .light-mode {
+            background-color: #ffffff;
+            color: #1f2937;
+            background-image: 
+                radial-gradient(circle at 100% 0%, rgba(139, 92, 246, 0.08) 0%, transparent 40%),
+                radial-gradient(circle at 0% 100%, rgba(59, 130, 246, 0.08) 0%, transparent 40%);
+        }
+        .light-mode .card-modern { 
+            background: #ffffff; 
+            border: 1px solid rgba(229, 231, 235, 0.8); 
+            box-shadow: 0 10px 40px -10px rgba(0,0,0,0.06); 
+        }
+        .light-mode header { background: rgba(255, 255, 255, 0.85); border-bottom: 1px solid #f3f4f6; }
+        .light-mode .input-box { background: #f9fafb; border-color: #e5e7eb; color: #1f2937; }
+
+        .dark-neon {
+            background-color: #030712;
+            color: #f3f4f6;
+            background-image: 
+                radial-gradient(circle at 50% 0%, rgba(14, 165, 233, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 100% 100%, rgba(59, 130, 246, 0.1) 0%, transparent 50%);
+        }
+        .dark-neon .card-modern { 
+            background: rgba(15, 23, 42, 0.85); 
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(14, 165, 233, 0.4); 
+            box-shadow: 0 0 25px rgba(14, 165, 233, 0.2); 
+        }
+        .dark-neon header { 
+            background: rgba(3, 7, 18, 0.85); 
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(14, 165, 233, 0.3); 
+        }
+        .dark-neon .input-box { 
+            background: #0b0f19; 
+            border-color: rgba(14, 165, 233, 0.4); 
+            color: #ffffff; 
+        }
+        .dark-neon .text-gradient {
+            background: linear-gradient(135deg, #38bdf8 0%, #818cf8 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            filter: drop-shadow(0 0 10px rgba(56, 189, 248, 0.4));
+        }
+
+        .card-modern { border-radius: 24px; transition: all 0.3s ease; }
+        .card-modern:hover { transform: translateY(-2px); }
+        
+        .text-gradient {
+            background: linear-gradient(135deg, #4f46e5 0%, #a855f7 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .btn-gradient {
+            background: linear-gradient(135deg, #4f46e5 0%, #a855f7 100%);
+            color: white;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        .dark-neon .btn-gradient {
+            background: linear-gradient(135deg, #0ea5e9 0%, #3b82f6 100%);
+            box-shadow: 0 0 15px rgba(14, 165, 233, 0.5);
+        }
+        .btn-gradient:hover { transform: translateY(-2px); }
+
+        .neon-toggle-btn {
+            position: relative;
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        .light-mode .neon-toggle-btn { background: #f3f4f6; color: #4f46e5; border: 1px solid #e5e7eb; }
+        .dark-neon .neon-toggle-btn { background: #0f172a; color: #38bdf8; border: 1px solid #0ea5e9; box-shadow: 0 0 15px rgba(14, 165, 233, 0.6); animation: neonPulse 2s infinite; }
+
+        @keyframes neonPulse {
+            0%, 100% { box-shadow: 0 0 10px rgba(14, 165, 233, 0.4); }
+            50% { box-shadow: 0 0 22px rgba(14, 165, 233, 0.8); }
+        }
+
+        .hero-image-container { position: relative; z-index: 10; display: flex; justify-content: center; }
+        .hero-blob {
+            position: absolute; right: -10%; bottom: -10%; width: 120%; height: 120%;
+            background: linear-gradient(135deg, rgba(79, 70, 229, 0.7) 0%, rgba(168, 85, 247, 0.7) 100%);
+            border-radius: 40% 60% 70% 30% / 40% 50% 60% 50%; z-index: -1;
+            animation: morphBlob 8s ease-in-out infinite alternate;
+        }
+        .dark-neon .hero-blob { background: linear-gradient(135deg, rgba(14, 165, 233, 0.6) 0%, rgba(59, 130, 246, 0.6) 100%); filter: drop-shadow(0 0 20px rgba(14, 165, 233, 0.5)); }
+
+        @keyframes morphBlob {
+            0% { border-radius: 40% 60% 70% 30% / 40% 50% 60% 50%; transform: rotate(0deg) scale(1); }
+            100% { border-radius: 70% 30% 50% 50% / 30% 30% 70% 70%; transform: rotate(10deg) scale(1.05); }
+        }
+
+        .hero-image { width: 100%; max-width: 380px; height: 450px; border-radius: 30px; object-fit: cover; border: 6px solid rgba(255,255,255,0.2); box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.3); }
+        
+        .custom-scrollbar::-webkit-scrollbar { width: 5px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #c4b5fd; border-radius: 10px; }
+
+        .auth-panel {
+            border-radius: 30px; padding: 40px; width: 100%; max-width: 400px;
+            transition: 0.3s;
+        }
+        .light-mode .auth-panel { background: white; box-shadow: 0 25px 50px rgba(139, 92, 246, 0.2); border: 1px solid rgba(139, 92, 246, 0.1); }
+        .dark-neon .auth-panel { background: #0f172a; box-shadow: 0 0 40px rgba(14, 165, 233, 0.3); border: 1px solid rgba(14, 165, 233, 0.5); }
+
+        .nav-link { transition: all 0.2s; position: relative; cursor: pointer; }
+        .light-mode .nav-link { color: #6b7280; }
+        .dark-neon .nav-link { color: #94a3b8; }
+        .nav-link.active { color: #4f46e5; font-weight: 600; }
+        .dark-neon .nav-link.active { color: #38bdf8; text-shadow: 0 0 10px rgba(56, 189, 248, 0.6); }
+
+        /* Ilon-simon (Snake / Diagonal) animatsiya portfolio kartochkalari uchun */
+        @keyframes snakeEntrance {
+            0% {
+                opacity: 0;
+                transform: translate(-60px, -60px) scale(0.9);
+            }
+            100% {
+                opacity: 1;
+                transform: translate(0, 0) scale(1);
+            }
+        }
+        .animate-snake {
+            animation: snakeEntrance 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            opacity: 0;
+        }
+    </style>
+</head>
+<body id="body-root" class="light-mode min-h-screen flex flex-col justify-between">
+
+    <!-- AUTHENTICATION -->
+    <div id="auth-container" class="fixed inset-0 z-50 flex items-center justify-center backdrop-blur-md p-4 transition-opacity duration-300">
+        <div class="auth-panel text-center relative overflow-hidden">
+            <div class="relative z-10">
+                <div class="flex bg-black/5 dark:bg-white/5 p-1.5 rounded-full mb-6 w-full">
+                    <button type="button" id="tab-reg-btn" onclick="switchAuthMode('register')" class="w-1/2 py-2 text-xs font-bold rounded-full bg-white dark:bg-slate-800 shadow-sm transition">Ro'yxatdan</button>
+                    <button type="button" id="tab-login-btn" onclick="switchAuthMode('login')" class="w-1/2 py-2 text-xs font-medium rounded-full transition opacity-70">Kirish</button>
+                </div>
+                
+                <h2 id="auth-title" class="text-2xl font-extrabold mb-1">Xush kelibsiz!</h2>
+                <p id="auth-subtitle" class="text-xs opacity-60 mb-6 uppercase tracking-wider font-medium">Shaxsiy Boshqaruv Tizimi</p>
+                
+                <div id="auth-error-msg" class="hidden w-full text-center text-xs text-red-500 font-medium bg-red-500/10 border border-red-500/30 py-2 rounded-xl mb-4"></div>
+                
+                <form id="auth-form" class="space-y-3">
+                    <div id="name-field-box">
+                        <input type="text" id="auth-name" required placeholder="Ismingiz" class="input-box w-full border rounded-xl px-4 py-3 text-sm focus:outline-none transition">
+                    </div>
+                    <input type="email" id="auth-email" required placeholder="Gmail pochta" class="input-box w-full border rounded-xl px-4 py-3 text-sm focus:outline-none transition">
+                    <input type="password" id="auth-code" required placeholder="Maxfiy parol" class="input-box w-full border rounded-xl px-4 py-3 text-sm focus:outline-none transition">
+                    <button type="submit" id="auth-submit-btn" class="w-full py-3 mt-4 btn-gradient font-bold rounded-xl text-sm tracking-wide">DAVOM ETISH</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- MAIN APP -->
+    <div id="main-app" class="hidden flex-1 flex-col">
+        <header class="sticky top-0 z-40 px-6 py-4 transition-colors">
+            <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
+                <div class="flex items-center gap-4 w-full md:w-auto justify-between md:justify-start">
+                    <div class="flex items-center gap-2">
+                        <img id="header-avatar-img" src="" alt="Avatar" class="w-10 h-10 rounded-xl object-cover border border-current/20 shadow-md">
+                        <div>
+                            <h1 class="text-sm font-extrabold tracking-tight" id="user-display-name">Foydalanuvchi</h1>
+                            <p class="text-[10px] opacity-60 font-medium" id="user-display-email">email@domain.com</p>
+                        </div>
+                    </div>
+                    
+                    <div class="flex items-center gap-2">
+                        <button onclick="toggleNeonMode()" id="neon-mode-btn" class="neon-toggle-btn" title="Neon Qorong'i Rejim"><i class="fa-solid fa-moon text-sm"></i></button>
+                        <button onclick="openMenuSettings()" class="w-10 h-10 rounded-full bg-black/5 dark:bg-white/5 hover:opacity-80 transition flex items-center justify-center border border-current/10"><i class="fa-solid fa-bars text-sm"></i></button>
+                    </div>
+                </div>
+                
+                <nav class="flex flex-wrap gap-4 sm:gap-6 justify-center items-center text-xs font-semibold">
+                    <button onclick="switchTab('dashboard')" id="nav-dashboard" class="nav-link active">BOSHQARUV</button>
+                    <button onclick="switchTab('secondbrain')" id="nav-secondbrain" class="nav-link">QAYDLAR</button>
+                    <button onclick="switchTab('projects')" id="nav-projects" class="nav-link">PORTFOLIO</button>
+                    <button onclick="switchTab('finance')" id="nav-finance" class="nav-link">MOLIYA</button>
+                    <button onclick="switchTab('habits')" id="nav-habits" class="nav-link">ODATLAR</button>
+                </nav>
+            </div>
+        </header>
+
+        <main class="max-w-7xl mx-auto w-full p-4 sm:p-8 flex-1 space-y-8">
+            <div id="tab-dashboard" class="space-y-8">
+                <div class="flex flex-col lg:flex-row items-center justify-between gap-12 mt-4 mb-12">
+                    <div class="lg:w-1/2 space-y-6">
+                        <p class="text-sm font-semibold tracking-widest text-indigo-500 uppercase">Salom, Hush kelibsiz!</p>
+                        <h1 class="text-5xl sm:text-6xl font-extrabold leading-tight">
+                            MEN <span class="text-gradient uppercase" id="welcome-greeting-name">ABU</span>
+                        </h1>
+                        <p class="text-lg opacity-70 font-light max-w-lg">
+                            Mening shaxsiy ish stolim. Bu yerda reja tuzaman, loyihalar va moliyani nazorat qilaman.
+                        </p>
+                        
+                        <div class="flex items-center gap-6 pt-4 flex-wrap">
+                            <button onclick="switchTab('projects')" class="btn-gradient px-8 py-3 rounded-full font-bold text-sm shadow-lg">LOYIHALARIM</button>
+                            <div class="flex gap-4 opacity-80 text-xl items-center">
+                                <a href="https://t.me/ergashewww_0" target="_blank" class="hover:text-sky-400 transition" title="Telegram"><i class="fa-brands fa-telegram"></i></a>
+                                <a href="https://instagram.com/abuxannnn" target="_blank" class="hover:text-pink-500 transition" title="Instagram"><i class="fa-brands fa-instagram"></i></a>
+                            </div>
+                        </div>
+
+                        <div class="flex items-center gap-8 pt-6 border-t border-current/10 mt-6">
+                            <div>
+                                <h4 class="text-2xl font-bold" id="stat-tasks">0+</h4>
+                                <p class="text-[10px] opacity-60 uppercase tracking-wide">Vazifalar</p>
+                            </div>
+                            <div>
+                                <h4 class="text-2xl font-bold" id="stat-projects">0</h4>
+                                <p class="text-[10px] opacity-60 uppercase tracking-wide">Loyihalar</p>
+                            </div>
+                            <div>
+                                <h4 class="text-2xl font-bold text-green-500" id="stat-finance">0</h4>
+                                <p class="text-[10px] opacity-60 uppercase tracking-wide">Balans</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="lg:w-1/2 flex justify-center">
+                        <div class="hero-image-container w-full">
+                            <div class="hero-blob"></div>
+                            <img src="men.jpg" alt="Abu Profile" class="hero-image">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                    <div class="lg:col-span-2 space-y-6">
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div class="card-modern p-5 flex items-center justify-between">
+                                <div>
+                                    <h4 class="text-xs font-semibold opacity-60 uppercase">Hudud va Vaqt</h4>
+                                    <h3 class="text-lg font-bold mt-1">Yozyovon <span id="realtime-clock" class="text-indigo-500 font-mono ml-2">00:00</span></h3>
+                                    <p class="text-sm opacity-80 font-medium mt-0.5" id="weather-info">Yuklanmoqda...</p>
+                                </div>
+                                <div class="w-14 h-14 rounded-2xl bg-indigo-500/10 flex items-center justify-center text-3xl" id="weather-icon-box">
+                                    <i class="fa-solid fa-moon text-indigo-400"></i>
+                                </div>
+                            </div>
+
+                            <div class="card-modern p-5 flex flex-col justify-center relative">
+                                <div class="flex justify-between items-center mb-3">
+                                    <h4 class="text-xs font-semibold opacity-60 uppercase flex items-center gap-2"><i class="fa-solid fa-chart-line text-indigo-500"></i> Valyuta Kurslari</h4>
+                                    <button onclick="openModal('currency-modal')" class="opacity-70 hover:opacity-100 transition w-6 h-6 flex items-center justify-center bg-black/5 dark:bg-white/5 rounded-full"><i class="fa-solid fa-plus text-xs"></i></button>
+                                </div>
+                                <div id="currency-list" class="flex flex-wrap gap-2"></div>
+                            </div>
+                        </div>
+
+                        <div class="card-modern p-6">
+                            <div class="flex justify-between items-center mb-4">
+                                <h3 class="text-sm font-bold flex items-center gap-2"><i class="fa-solid fa-link text-purple-500"></i> Tezkor Havolalar</h3>
+                                <button onclick="openModal('link-modal')" class="text-xs bg-indigo-500/10 text-indigo-500 px-3 py-1.5 rounded-full font-semibold hover:bg-indigo-500/20 transition"><i class="fa-solid fa-plus mr-1"></i> Qo'shish</button>
+                            </div>
+                            <div id="links-grid" class="grid grid-cols-2 sm:grid-cols-4 gap-3"></div>
+                        </div>
+                    </div>
+
+                    <div class="card-modern p-6 flex flex-col h-full max-h-[500px]">
+                        <div class="flex justify-between items-center mb-4 pb-3 border-b border-current/10">
+                            <h3 class="text-sm font-bold flex items-center gap-2"><i class="fa-regular fa-square-check text-green-500"></i> Bugungi Vazifalar</h3>
+                        </div>
+                        <form id="task-form" class="space-y-3 mb-4">
+                            <input type="text" id="task-title-input" required placeholder="Nima qilasiz bugun?" class="input-box w-full border rounded-xl px-4 py-2.5 text-sm focus:outline-none transition">
+                            <div class="flex gap-2">
+                                <input type="time" id="task-time-input" required class="input-box w-1/2 border rounded-xl px-4 py-2.5 text-sm focus:outline-none transition">
+                                <button type="submit" class="w-1/2 py-2.5 btn-gradient font-bold rounded-xl text-xs">Qo'shish</button>
+                            </div>
+                        </form>
+                        <div class="flex-1 overflow-y-auto pr-1 custom-scrollbar space-y-2" id="priority-tasks-list"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="tab-secondbrain" class="hidden space-y-6"><div class="card-modern p-8"><div class="flex justify-between items-center border-b border-current/10 pb-4 mb-6"><h2 class="text-xl font-bold">Miya & Qaydlar</h2><button onclick="openModal('note-modal')" class="px-5 py-2.5 btn-gradient rounded-full text-xs font-bold shadow-md">Yangi Qayd</button></div><div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5" id="notes-grid"></div></div></div>
+            <div id="tab-projects" class="hidden space-y-6"><div class="card-modern p-8"><div class="flex justify-between items-center border-b border-current/10 pb-4 mb-6"><h2 class="text-xl font-bold">Mening Portfoliom</h2><button onclick="openModal('project-modal')" class="px-5 py-2.5 btn-gradient rounded-full text-xs font-bold shadow-md">Loyiha Qo'shish</button></div><div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5" id="projects-grid"></div></div></div>
+            <div id="tab-finance" class="hidden space-y-6"><div class="card-modern p-8"><div class="flex justify-between items-center border-b border-current/10 pb-4 mb-6"><h2 class="text-xl font-bold">Moliya Nazorati</h2><button onclick="openModal('finance-modal')" class="px-5 py-2.5 btn-gradient rounded-full text-xs font-bold shadow-md">Tranzaksiya</button></div><div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5" id="finance-grid"></div></div></div>
+            <div id="tab-habits" class="hidden space-y-6"><div class="card-modern p-8"><div class="flex justify-between items-center border-b border-current/10 pb-4 mb-6"><h2 class="text-xl font-bold">Odatlar (Tracker)</h2><button onclick="openModal('habit-modal')" class="px-5 py-2.5 btn-gradient rounded-full text-xs font-bold shadow-md">Odat Qo'shish</button></div><div class="space-y-3 max-w-2xl mx-auto" id="habits-list"></div></div></div>
+        </main>
+    </div>
+
+    <!-- MODALS -->
+    <div id="main-menu-modal" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/40 backdrop-blur-sm p-4"><div class="card-modern p-6 w-full max-w-sm space-y-5 shadow-2xl relative"><button onclick="closeModal('main-menu-modal')" class="absolute top-4 right-4 opacity-70 hover:opacity-100 bg-black/5 dark:bg-white/5 w-8 h-8 rounded-full flex items-center justify-center"><i class="fa-solid fa-xmark text-sm"></i></button><h3 class="text-lg font-bold border-b border-current/10 pb-3">Sozlamalar</h3><div class="flex flex-col gap-3"><button onclick="openSubMenu('profile-edit-modal')" class="w-full py-3.5 bg-black/5 dark:bg-white/5 hover:opacity-80 font-semibold rounded-xl text-sm flex justify-between items-center px-4 transition"><span>Profilni o'zgartirish</span> <i class="fa-solid fa-chevron-right opacity-50"></i></button><button onclick="openSubMenu('bot-settings-modal')" class="w-full py-3.5 bg-black/5 dark:bg-white/5 hover:opacity-80 font-semibold rounded-xl text-sm flex justify-between items-center px-4 transition"><span>Telegram Bot Ulash</span> <i class="fa-solid fa-chevron-right opacity-50"></i></button><button onclick="logoutUser()" class="w-full py-3.5 bg-red-500/10 text-red-500 font-bold rounded-xl text-sm transition mt-2">Hisobdan chiqish</button></div></div></div>
+    
+    <div id="profile-edit-modal" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/40 backdrop-blur-sm p-4">
+        <div class="card-modern p-6 w-full max-w-sm space-y-5 shadow-2xl relative">
+            <button onclick="closeSubMenu('profile-edit-modal')" class="absolute top-4 left-4 opacity-70 bg-black/5 dark:bg-white/5 w-8 h-8 rounded-full flex items-center justify-center"><i class="fa-solid fa-arrow-left text-sm"></i></button>
+            <h3 class="text-lg font-bold text-center border-b border-current/10 pb-3">Profilni Tahrirlash</h3>
+            <div class="space-y-4">
+                <div class="flex items-center gap-4 bg-black/5 dark:bg-white/5 p-3 rounded-2xl border border-current/10">
+                    <img id="current-edit-avatar" src="" alt="Avatar" class="w-14 h-14 rounded-xl object-cover border border-current/20">
+                    <div class="flex-1">
+                        <label class="block text-[10px] opacity-60 mb-2">Profil rasmini o'zgartirish</label>
+                        <label for="edit-profile-avatar" class="cursor-pointer bg-indigo-500/20 text-indigo-500 dark:text-indigo-400 px-3 py-1.5 rounded-lg text-xs font-bold inline-block hover:bg-indigo-500/30 transition">Rasm tanlash</label>
+                        <input type="file" id="edit-profile-avatar" accept="image/*" class="hidden" onchange="previewAvatar(this)">
+                    </div>
+                </div>
+                <div><label class="block text-xs opacity-60 mb-1">Ism va Familiya</label><input type="text" id="edit-profile-name" class="input-box w-full border rounded-xl px-4 py-3 text-sm focus:outline-none"></div>
+                <div><label class="block text-xs opacity-60 mb-1">Gmail (o'zgarmaydi)</label><input type="email" id="edit-profile-email" class="input-box w-full border rounded-xl px-4 py-3 text-sm opacity-50 cursor-not-allowed" disabled></div>
+                <button onclick="saveProfileData()" class="w-full py-3 btn-gradient font-bold rounded-xl text-sm">Saqlash</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="bot-settings-modal" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/40 backdrop-blur-sm p-4"><div class="card-modern p-6 w-full max-w-sm space-y-5 shadow-2xl relative"><button onclick="closeSubMenu('bot-settings-modal')" class="absolute top-4 left-4 opacity-70 bg-black/5 dark:bg-white/5 w-8 h-8 rounded-full flex items-center justify-center"><i class="fa-solid fa-arrow-left text-sm"></i></button><h3 class="text-lg font-bold text-center border-b border-current/10 pb-3">Telegram Bot</h3><div class="space-y-4"><div><label class="block text-xs opacity-60 mb-1">Bot Token:</label><input type="text" id="edit-bot-token" class="input-box w-full border rounded-xl px-4 py-3 text-sm"></div><div><label class="block text-xs opacity-60 mb-1">Chat ID:</label><input type="text" id="edit-chat-id" class="input-box w-full border rounded-xl px-4 py-3 text-sm"></div><button onclick="saveBotSettings()" class="w-full py-3 bg-[#0088cc] text-white font-bold rounded-xl text-sm transition shadow-lg shadow-blue-500/30">Ulash & Saqlash</button></div></div></div>
+    
+    <div id="currency-modal" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/40 backdrop-blur-sm p-4"><div class="card-modern p-6 w-full max-w-xs space-y-4 shadow-2xl relative"><button onclick="closeModal('currency-modal')" class="absolute top-4 right-4 opacity-70"><i class="fa-solid fa-xmark text-sm"></i></button><h3 class="text-base font-bold">Valyuta qo'shish</h3><form id="currency-form" class="space-y-3"><input type="text" id="cur-name" required placeholder="Nomi (USD)" class="input-box w-full border rounded-xl px-4 py-3 text-sm"><input type="text" id="cur-value" required placeholder="Kursi (12,850)" class="input-box w-full border rounded-xl px-4 py-3 text-sm"><button type="submit" class="w-full py-3 btn-gradient rounded-xl text-sm font-bold">Saqlash</button></form></div></div>
+    <div id="link-modal" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/40 backdrop-blur-sm p-4"><div class="card-modern p-6 w-full max-w-sm space-y-4 shadow-2xl relative"><button onclick="closeModal('link-modal')" class="absolute top-4 right-4 opacity-70"><i class="fa-solid fa-xmark text-sm"></i></button><h3 class="text-base font-bold">Havola qo'shish</h3><form id="link-form" class="space-y-3"><input type="text" id="link-title" required placeholder="Sayt nomi" class="input-box w-full border rounded-xl px-4 py-3 text-sm"><input type="url" id="link-url" required placeholder="https://..." class="input-box w-full border rounded-xl px-4 py-3 text-sm"><button type="submit" class="w-full py-3 btn-gradient rounded-xl text-sm font-bold">Saqlash</button></form></div></div>
+    <div id="note-modal" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/40 backdrop-blur-sm p-4"><div class="card-modern p-6 w-full max-w-md space-y-4 shadow-2xl relative"><button onclick="closeModal('note-modal')" class="absolute top-4 right-4 opacity-70"><i class="fa-solid fa-xmark text-sm"></i></button><h3 class="text-base font-bold">Qayd yozish</h3><form id="note-form" class="space-y-3"><input type="text" id="note-title" required placeholder="Sarlavha" class="input-box w-full border rounded-xl px-4 py-3 text-sm"><textarea id="note-content" required rows="4" placeholder="Fikr yoki g'oyangiz..." class="input-box w-full border rounded-xl px-4 py-3 text-sm resize-none"></textarea><button type="submit" class="w-full py-3 btn-gradient text-white rounded-xl text-sm font-bold">Qo'shish</button></form></div></div>
+    <div id="project-modal" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/40 backdrop-blur-sm p-4"><div class="card-modern p-6 w-full max-w-md space-y-4 shadow-2xl relative"><button onclick="closeModal('project-modal')" class="absolute top-4 right-4 opacity-70"><i class="fa-solid fa-xmark text-sm"></i></button><h3 class="text-base font-bold">Loyiha qo'shish</h3><form id="project-form" class="space-y-3"><input type="text" id="proj-title" required placeholder="Loyiha nomi" class="input-box w-full border rounded-xl px-4 py-3 text-sm"><input type="url" id="proj-url" required placeholder="URL havola" class="input-box w-full border rounded-xl px-4 py-3 text-sm"><button type="submit" class="w-full py-3 btn-gradient rounded-xl text-sm font-bold">Saqlash</button></form></div></div>
+    <div id="finance-modal" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/40 backdrop-blur-sm p-4"><div class="card-modern p-6 w-full max-w-md space-y-4 shadow-2xl relative"><button onclick="closeModal('finance-modal')" class="absolute top-4 right-4 opacity-70"><i class="fa-solid fa-xmark text-sm"></i></button><h3 class="text-base font-bold">Tranzaksiya</h3><form id="finance-form" class="space-y-3"><input type="text" id="fin-title" required placeholder="Nimaga sarflandi/Keldi?" class="input-box w-full border rounded-xl px-4 py-3 text-sm"><input type="number" id="fin-amount" required placeholder="Summa (UZS)" class="input-box w-full border rounded-xl px-4 py-3 text-sm"><select id="fin-type" class="input-box w-full border rounded-xl px-4 py-3 text-sm"><option value="Chiqim">Chiqim (Xarajat -)</option><option value="Kirim">Kirim (Daromad +)</option></select><button type="submit" class="w-full py-3 btn-gradient rounded-xl text-sm font-bold">Saqlash</button></form></div></div>
+    <div id="habit-modal" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/40 backdrop-blur-sm p-4"><div class="card-modern p-6 w-full max-w-md space-y-4 shadow-2xl relative"><button onclick="closeModal('habit-modal')" class="absolute top-4 right-4 opacity-70"><i class="fa-solid fa-xmark text-sm"></i></button><h3 class="text-base font-bold">Odat yoki Eslatma</h3><form id="habit-form" class="space-y-3"><input type="text" id="habit-title" required placeholder="Nima qilasiz?" class="input-box w-full border rounded-xl px-4 py-3 text-sm"><input type="time" id="habit-time" required class="input-box w-full border rounded-xl px-4 py-3 text-sm"><button type="submit" class="w-full py-3 btn-gradient rounded-xl text-sm font-bold">Belgilash</button></form></div></div>
+
+    <!-- SCRIPT -->
+    <script>
+        const StorageManager = {
+            mem: {},
+            set: function(k, v) { this.mem[k] = v; try { localStorage.setItem(k, v); } catch(e) {} },
+            get: function(k, def) { try { let v = localStorage.getItem(k); return v !== null ? v : (this.mem[k] || def); } catch(e) { return this.mem[k] || def; } },
+            remove: function(k) { delete this.mem[k]; try { localStorage.removeItem(k); } catch(e) {} }
+        };
+
+        let currentUser = null;
+        let currentAuthMode = 'register';
+        let tgBotToken = StorageManager.get('tg_bot_token', '9245306269:AAFyWBN6Z1iPCEYpNWv6B3MTNF3gMfSbPx8');
+        let tgChatId = StorageManager.get('tg_chat_id', '8497533657');
+        let lastProcessedMinute = -1;
+        let lastProcessedHour = -1;
+        let tgUpdateOffset = 0;
+
+        const defaultCurrencies = [{ id: 1, name: 'USD', value: '12,850' }, { id: 2, name: 'EUR', value: '13,900' }, { id: 3, name: 'RUB', value: '135' }];
+        const defaultLinks = [{ id: 1, title: 'Telegram', url: 'https://t.me', iconClass: 'fa-brands fa-telegram text-sky-400' }, { id: 2, title: 'YouTube', url: 'https://youtube.com', iconClass: 'fa-brands fa-youtube text-red-500' }, { id: 3, title: 'GitHub', url: 'https://github.com', iconClass: 'fa-brands fa-github' }];
+
+        function toggleNeonMode() {
+            const body = document.getElementById('body-root');
+            const btnIcon = document.querySelector('#neon-mode-btn i');
+            if (body.classList.contains('light-mode')) {
+                body.classList.replace('light-mode', 'dark-neon');
+                btnIcon.className = "fa-solid fa-sun text-amber-400";
+                StorageManager.set('jarvis_theme', 'dark-neon');
+            } else {
+                body.classList.replace('dark-neon', 'light-mode');
+                btnIcon.className = "fa-solid fa-moon text-indigo-500";
+                StorageManager.set('jarvis_theme', 'light-mode');
+            }
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            const savedTheme = StorageManager.get('jarvis_theme', 'light-mode');
+            if (savedTheme === 'dark-neon') {
+                document.getElementById('body-root').classList.replace('light-mode', 'dark-neon');
+                document.querySelector('#neon-mode-btn i').className = "fa-solid fa-sun text-amber-400";
+            }
+
+            document.getElementById('auth-form').addEventListener('submit', handleAuthSubmit);
+            document.getElementById('task-form').addEventListener('submit', (e) => { e.preventDefault(); addData('tasks', { title: document.getElementById('task-title-input').value, time: document.getElementById('task-time-input').value }); e.target.reset(); });
+            document.getElementById('currency-form').addEventListener('submit', (e) => { e.preventDefault(); addData('currencies', { name: document.getElementById('cur-name').value, value: document.getElementById('cur-value').value }); closeModal('currency-modal'); e.target.reset(); });
+            document.getElementById('link-form').addEventListener('submit', (e) => { e.preventDefault(); addData('links', { title: document.getElementById('link-title').value, url: document.getElementById('link-url').value, iconClass: 'fa-solid fa-link text-indigo-400' }); closeModal('link-modal'); e.target.reset(); });
+            document.getElementById('note-form').addEventListener('submit', (e) => { e.preventDefault(); addData('notes', { title: document.getElementById('note-title').value, content: document.getElementById('note-content').value }); closeModal('note-modal'); e.target.reset(); });
+            document.getElementById('project-form').addEventListener('submit', (e) => { e.preventDefault(); addData('projects', { title: document.getElementById('proj-title').value, url: document.getElementById('proj-url').value }); closeModal('project-modal'); e.target.reset(); });
+            document.getElementById('finance-form').addEventListener('submit', (e) => { e.preventDefault(); addData('finance', { title: document.getElementById('fin-title').value, amount: document.getElementById('fin-amount').value, type: document.getElementById('fin-type').value }); closeModal('finance-modal'); e.target.reset(); });
+            document.getElementById('habit-form').addEventListener('submit', (e) => { e.preventDefault(); addData('habits', { title: document.getElementById('habit-title').value, time: document.getElementById('habit-time').value }); closeModal('habit-modal'); e.target.reset(); });
+
+            initApp();
+        });
+
+        function handleAuthSubmit(e) {
+            e.preventDefault();
+            const btn = document.getElementById('auth-submit-btn'); btn.innerText = "KUTING...";
+            setTimeout(() => {
+                const email = document.getElementById('auth-email').value.trim().toLowerCase();
+                const code = document.getElementById('auth-code').value.trim();
+                const nameInput = document.getElementById('auth-name').value.trim();
+                
+                const validRegex = /^[a-z0-9][a-z0-9._-]*@gmail\.com$/;
+                if(!validRegex.test(email)) { showAuthError("Faqat haqiqiy @gmail.com qabul qilinadi!"); btn.innerText = "DAVOM ETISH"; return; }
+
+                let users = [];
+                try { users = JSON.parse(StorageManager.get('jarvis_users_db', '[]')); if (!Array.isArray(users)) users = []; } catch (error) { users = []; }
+
+                if (currentAuthMode === 'register') {
+                    if (users.find(u => u.email === email)) { showAuthError("Bu pochta band! Kirishga o'ting."); btn.innerText = "DAVOM ETISH"; return; }
+                    currentUser = { name: nameInput || 'Foydalanuvchi', email: email, code: code, avatar: '', data: { notes: [], projects: [], finance: [], habits: [], tasks: [], currencies: JSON.parse(JSON.stringify(defaultCurrencies)), links: JSON.parse(JSON.stringify(defaultLinks)) } };
+                    users.push(currentUser); StorageManager.set('jarvis_users_db', JSON.stringify(users)); StorageManager.set('jarvis_active_session', email); showApp();
+                } else {
+                    const user = users.find(u => u.email === email);
+                    if (!user) { showAuthError("Pochta topilmadi! Ro'yxatdan o'ting."); btn.innerText = "DAVOM ETISH"; return; }
+                    if (user.code !== code) { showAuthError("Parol xato!"); btn.innerText = "DAVOM ETISH"; return; }
+                    currentUser = user; 
+                    if (!currentUser.data) { currentUser.data = { notes: [], projects: [], finance: [], habits: [], tasks: [], currencies: JSON.parse(JSON.stringify(defaultCurrencies)), links: JSON.parse(JSON.stringify(defaultLinks)) }; }
+                    StorageManager.set('jarvis_active_session', email); showApp();
+                }
+                btn.innerText = "DAVOM ETISH";
+            }, 300);
+        }
+
+        function switchAuthMode(mode) {
+            currentAuthMode = mode; document.getElementById('auth-error-msg').classList.add('hidden');
+            const regBtn = document.getElementById('tab-reg-btn'); const logBtn = document.getElementById('tab-login-btn');
+            const title = document.getElementById('auth-title'); const nameBox = document.getElementById('name-field-box');
+            const nameInput = document.getElementById('auth-name'); document.getElementById('auth-form').reset();
+            
+            if (mode === 'register') {
+                regBtn.className = "w-1/2 py-2 text-xs font-bold rounded-full bg-white dark:bg-slate-800 shadow-sm transition";
+                logBtn.className = "w-1/2 py-2 text-xs font-medium rounded-full transition opacity-70";
+                title.innerText = "Xush kelibsiz!"; nameBox.style.display = 'block'; nameInput.required = true;
+            } else {
+                logBtn.className = "w-1/2 py-2 text-xs font-bold rounded-full bg-white dark:bg-slate-800 shadow-sm transition";
+                regBtn.className = "w-1/2 py-2 text-xs font-medium rounded-full transition opacity-70";
+                title.innerText = "Qaytganingiz bilan!"; nameBox.style.display = 'none'; nameInput.required = false;
+            }
+        }
+
+        function showAuthError(msg) {
+            const errorBox = document.getElementById('auth-error-msg'); errorBox.innerText = msg; errorBox.classList.remove('hidden');
+            setTimeout(() => errorBox.classList.add('hidden'), 4000);
+        }
+
+        function initApp() {
+            let users = [];
+            try { users = JSON.parse(StorageManager.get('jarvis_users_db', '[]')); if(!Array.isArray(users)) users = []; } catch(e) { StorageManager.set('jarvis_users_db', '[]'); }
+            const savedEmail = StorageManager.get('jarvis_active_session');
+            if (savedEmail) { const foundUser = users.find(u => u.email === savedEmail); if (foundUser) { currentUser = foundUser; showApp(); } else { StorageManager.remove('jarvis_active_session'); showAuth(); } } else { showAuth(); }
+            startRealtimeClock(); fetchRealWeather(); initTelegramBot(); sendBotReplyKeyboard();
+        }
+
+        function showAuth() { document.getElementById('auth-container').classList.remove('hidden'); document.getElementById('auth-container').classList.add('flex'); document.getElementById('main-app').classList.add('hidden'); document.getElementById('main-app').classList.remove('flex'); }
+        function showApp() {
+            document.getElementById('auth-container').classList.add('hidden'); document.getElementById('auth-container').classList.remove('flex'); document.getElementById('main-app').classList.remove('hidden'); document.getElementById('main-app').classList.add('flex');
+            
+            document.getElementById('user-display-name').innerText = currentUser.name; 
+            document.getElementById('welcome-greeting-name').innerText = currentUser.name.split(' ')[0];
+            document.getElementById('user-display-email').innerText = currentUser.email;
+            
+            const avatarSrc = currentUser.avatar ? currentUser.avatar : 'men_5.jpg';
+            document.getElementById('header-avatar-img').src = avatarSrc; 
+            document.getElementById('current-edit-avatar').src = avatarSrc;
+            document.getElementById('edit-profile-name').value = currentUser.name; 
+            document.getElementById('edit-profile-email').value = currentUser.email; 
+            loadData();
+        }
+
+        function saveUserData() {
+            if (!currentUser) return;
+            let users = [];
+            try { users = JSON.parse(StorageManager.get('jarvis_users_db', '[]')); if(!Array.isArray(users)) users = []; } catch(e) { users = []; }
+            const index = users.findIndex(u => u.email === currentUser.email);
+            if (index !== -1) { users[index] = currentUser; } else { users.push(currentUser); }
+            StorageManager.set('jarvis_users_db', JSON.stringify(users));
+        }
+
+        function addData(category, item) {
+            if (!currentUser.data) currentUser.data = { notes: [], projects: [], finance: [], habits: [], tasks: [], currencies: [], links: [] };
+            if (!currentUser.data[category]) currentUser.data[category] = [];
+            item.id = Date.now();
+            currentUser.data[category].push(item);
+            saveUserData();
+            loadData();
+        }
+
+        function deleteData(category, id) { 
+            if(currentUser.data && currentUser.data[category]) { 
+                currentUser.data[category] = currentUser.data[category].filter(item => item.id !== id); 
+                saveUserData(); 
+                loadData(); 
+            } 
+        }
+
+        function getUzbekistanTime() {
+            const now = new Date(); const options = { timeZone: 'Asia/Tashkent', hour12: false, hour: '2-digit', minute: '2-digit', second: '2-digit' };
+            const formatter = new Intl.DateTimeFormat([], options); const parts = formatter.formatToParts(now);
+            let h = '00', m = '00', s = '00';
+            parts.forEach(p => { if (p.type === 'hour') h = p.value; if (p.type === 'minute') m = p.value; if (p.type === 'second') s = p.value; });
+            return { hour: h, minute: m, second: s, timeString: `${h}:${m}`, hourNum: parseInt(h), minuteNum: parseInt(m) };
+        }
+
+        function startRealtimeClock() {
+            setInterval(() => {
+                const uzTime = getUzbekistanTime(); 
+                const clockEl = document.getElementById('realtime-clock');
+                if(clockEl) clockEl.innerText = uzTime.timeString;
+
+                updateWeatherIconByTime(uzTime.hourNum);
+
+                if(uzTime.minuteNum !== lastProcessedMinute) { lastProcessedMinute = uzTime.minuteNum; checkBotSchedules(uzTime); }
+                if(uzTime.hourNum !== lastProcessedHour && uzTime.minuteNum === 0) { lastProcessedHour = uzTime.hourNum; sendHourlySecondBrainReminder(); }
+            }, 1000);
+        }
+
+        function updateWeatherIconByTime(hourNum) {
+            const isDay = (hourNum >= 6 && hourNum < 19);
+            const iconBox = document.getElementById('weather-icon-box');
+            if (iconBox) {
+                if (isDay) {
+                    iconBox.innerHTML = '<i class="fa-solid fa-sun text-yellow-500"></i>';
+                } else {
+                    iconBox.innerHTML = '<i class="fa-solid fa-moon text-indigo-400"></i>';
+                }
+            }
+        }
+
+        async function fetchRealWeather() {
+            try {
+                const response = await fetch('https://api.open-meteo.com/v1/forecast?latitude=40.6869&longitude=71.6881¤t_weather=true');
+                if(!response.ok) throw new Error();
+                const data = await response.json(); 
+                const weather = data.current_weather; 
+                const temp = Math.round(weather.temperature);
+                const code = weather.weathercode; 
+                const uzTime = getUzbekistanTime(); 
+                
+                let desc = "Musaffo osmon"; 
+                if (code >= 1 && code <= 3) { desc = "Bulutli"; } 
+                else if (code >= 51 && code <= 67) { desc = "Yomg'ir"; } 
+                else if (code >= 71) { desc = "Qor"; }
+                
+                document.getElementById('weather-info').innerText = `${temp}°C • ${desc}`; 
+                updateWeatherIconByTime(uzTime.hourNum);
+            } catch (error) {
+                document.getElementById('weather-info').innerText = "20°C • Musaffo";
+            }
+        }
+
+        function saveBotSettings() {
+            tgBotToken = document.getElementById('edit-bot-token').value.trim(); tgChatId = document.getElementById('edit-chat-id').value.trim();
+            StorageManager.set('tg_bot_token', tgBotToken); StorageManager.set('tg_chat_id', tgChatId);
+            closeSubMenu('bot-settings-modal'); alert("Bot saqlandi!"); sendBotReplyKeyboard();
+        }
+
+        async function sendBotReplyKeyboard() {
+            if(!tgBotToken || !tgChatId) return;
+            try { await fetch(`https://api.telegram.org/bot${tgBotToken}/sendMessage`, { method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({ chat_id: tgChatId, text: "🤖 <b>Shaxsiy Tizim faol!</b>", parse_mode: 'HTML', reply_markup: { keyboard: [[{"text": "🧠 Qaydlar"}, {"text": "📂 Portfolio"}], [{"text": "💰 Moliya"}, {"text": "🔥 Odatlar"}]], resize_keyboard: true } }) }); } catch(e) {}
+        }
+
+        async function sendTgMessage(text) {
+            if(!tgBotToken || !tgChatId) return;
+            try { await fetch(`https://api.telegram.org/bot${tgBotToken}/sendMessage`, { method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({ chat_id: tgChatId, text: text, parse_mode: 'HTML' }) }); } catch(e) {}
+        }
+
+        function checkBotSchedules(uzTime) {
+            if(!currentUser || !tgBotToken || !tgChatId) return;
+            const currentTime = `${uzTime.hour}:${uzTime.minute}`;
+            if(currentUser.data && currentUser.data.habits) { currentUser.data.habits.forEach(habit => { if(habit.time === currentTime) { sendTgMessage(`⏰ <b>Eslatma!</b>\n\nVazifa: <b>${habit.title}</b>\nVaqti: ${habit.time}`); } }); }
+        }
+        function sendHourlySecondBrainReminder() {
+            if(!currentUser || !tgBotToken || !tgChatId) return;
+            if(currentUser.data && currentUser.data.notes && currentUser.data.notes.length > 0) {
+                const randomNote = currentUser.data.notes[Math.floor(Math.random() * currentUser.data.notes.length)];
+                sendTgMessage(`🧠 <b>Qayd:</b>\n\n<b>${randomNote.title}</b>\n${randomNote.content}`);
+            }
+        }
+
+        function initTelegramBot() {
+            document.getElementById('edit-bot-token').value = tgBotToken; document.getElementById('edit-chat-id').value = tgChatId;
+            setInterval(async () => {
+                if(!tgBotToken || !tgChatId) return;
+                try {
+                    const res = await fetch(`https://api.telegram.org/bot${tgBotToken}/getUpdates?offset=${tgUpdateOffset + 1}`); const data = await res.json();
+                    if(data.ok && data.result.length > 0) { data.result.forEach(update => { tgUpdateOffset = update.update_id; if(update.message && update.message.text) { handleSmartBotChat(update.message.text, update.message.chat.id); } }); }
+                } catch(e) {}
+            }, 2000);
+        }
+
+        function handleSmartBotChat(text, incomingChatId) {
+            if(String(incomingChatId) !== String(tgChatId)) return;
+            const msg = text.toLowerCase().trim(); const data = currentUser ? currentUser.data : {};
+            if(msg.includes('qayd')) { let notes = data.notes || []; let res = "🧠 <b>Qaydlar:</b>\n\n"; notes.forEach((n, i) => res += `${i+1}. <b>${n.title}</b>\n${n.content}\n\n`); sendTgMessage(notes.length ? res : "Qaydlar yo'q."); } 
+            else if(msg.includes('portfolio') || msg.includes('loyiha')) { let projects = data.projects || []; let res = "📂 <b>Loyihalar:</b>\n\n"; projects.forEach((p, i) => res += `${i+1}. <b>${p.title}</b> - ${p.url}\n`); sendTgMessage(projects.length ? res : "Loyihalar yo'q."); } 
+            else if(msg.includes('moliya') || msg.includes('pul')) { let finance = data.finance || []; let res = "💰 <b>Moliya:</b>\n\n"; let jami = 0; finance.forEach((f, i) => { res += `${i+1}. ${f.title}: ${f.type==='Chiqim'?'-':'+'}${Number(f.amount).toLocaleString()} UZS\n`; jami += f.type === 'Kirim' ? Number(f.amount) : -Number(f.amount); }); res += `\n<b>Qoldiq:</b> ${jami.toLocaleString()} UZS`; sendTgMessage(finance.length ? res : "Ma'lumot yo'q."); } 
+            else if(msg.includes('odat')) { let habits = data.habits || []; let res = "🔥 <b>Odatlar:</b>\n\n"; habits.forEach((h, i) => res += `${i+1}. ${h.title} (${h.time})\n`); sendTgMessage(habits.length ? res : "Odatlar yo'q."); } 
+            else { sendTgMessage(`Tushundim. Boshqa savol bormi?`); }
+        }
+
+        function openMenuSettings() { document.getElementById('main-menu-modal').classList.remove('hidden'); document.getElementById('main-menu-modal').classList.add('flex'); }
+        function openSubMenu(id) { document.getElementById('main-menu-modal').classList.add('hidden'); document.getElementById('main-menu-modal').classList.remove('flex'); document.getElementById(id).classList.remove('hidden'); document.getElementById(id).classList.add('flex'); }
+        function closeSubMenu(id) { document.getElementById(id).classList.add('hidden'); document.getElementById(id).classList.remove('flex'); openMenuSettings(); }
+        function closeModal(id) { document.getElementById(id).classList.add('hidden'); document.getElementById(id).classList.remove('flex'); }
+        function openModal(id) { document.getElementById(id).classList.remove('hidden'); document.getElementById(id).classList.add('flex'); }
+
+        function previewAvatar(input) {
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    document.getElementById('current-edit-avatar').src = e.target.result;
+                };
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+        function saveProfileData() { 
+            const newName = document.getElementById('edit-profile-name').value.trim(); 
+            const fileInput = document.getElementById('edit-profile-avatar');
+            if(newName) { currentUser.name = newName; } 
+            
+            if(fileInput.files && fileInput.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    currentUser.avatar = e.target.result;
+                    saveUserData(); showApp(); closeModal('profile-edit-modal');
+                };
+                reader.readAsDataURL(fileInput.files[0]);
+            } else {
+                saveUserData(); showApp(); closeModal('profile-edit-modal');
+            }
+        }
+        function logoutUser() { StorageManager.remove('jarvis_active_session'); location.reload(); }
+
+        function switchTab(tab) {
+            ['dashboard', 'secondbrain', 'projects', 'finance', 'habits'].forEach(t => { 
+                document.getElementById('tab-' + t).classList.add('hidden'); 
+                document.getElementById('nav-' + t).className = "nav-link"; 
+            });
+            document.getElementById('tab-' + tab).classList.remove('hidden'); 
+            document.getElementById('nav-' + tab).className = "nav-link active";
+        }
+
+        function loadData() {
+            if(!currentUser.data) currentUser.data = { notes: [], projects: [], finance: [], habits: [], tasks: [], currencies: JSON.parse(JSON.stringify(defaultCurrencies)), links: JSON.parse(JSON.stringify(defaultLinks)) };
+            renderCurrencies(); renderLinks(); renderNotes(); renderProjects(); renderFinance(); renderHabits(); renderTasks(); updateDashboardStats();
+        }
+
+        function updateDashboardStats() {
+            document.getElementById('stat-tasks').innerText = currentUser.data.tasks.length + "+";
+            document.getElementById('stat-projects').innerText = currentUser.data.projects.length;
+            let bal = 0; currentUser.data.finance.forEach(f => { bal += f.type === 'Kirim' ? Number(f.amount) : -Number(f.amount); });
+            document.getElementById('stat-finance').innerText = bal >= 0 ? "+" + (bal/1000).toFixed(0) + "k" : (bal/1000).toFixed(0) + "k";
+        }
+
+        function renderCurrencies() { document.getElementById('currency-list').innerHTML = currentUser.data.currencies.map(c => `<span class="bg-black/5 dark:bg-white/5 px-3 py-1.5 rounded-lg border border-current/10 text-[10px] font-bold opacity-70">${c.name}: <span class="opacity-100">${c.value}</span></span>`).join(''); }
+        function renderLinks() { document.getElementById('links-grid').innerHTML = currentUser.data.links.map(l => `<a href="${l.url}" target="_blank" class="bg-black/5 dark:bg-white/5 border border-current/10 p-4 rounded-2xl flex flex-col items-center justify-center gap-2 hover:opacity-80 hover:-translate-y-1 transition"><i class="${l.iconClass} text-2xl"></i> <span class="text-[10px] font-bold truncate w-full text-center">${l.title}</span></a>`).join(''); }
+        function renderNotes() { document.getElementById('notes-grid').innerHTML = currentUser.data.notes.map(n => `<div class="card-modern p-6 relative group"><h4 class="text-base font-bold pr-6 mb-2">${n.title}</h4><p class="text-xs opacity-70 leading-relaxed">${n.content}</p><button type="button" onclick="deleteData('notes', ${n.id})" class="absolute top-6 right-6 opacity-30 hover:opacity-100 text-red-500 transition"><i class="fa-solid fa-trash"></i></button></div>`).join(''); }
+        
+        function renderProjects() { 
+            document.getElementById('projects-grid').innerHTML = currentUser.data.projects.map((p, index) => `
+                <div class="card-modern p-6 relative group animate-snake" style="animation-delay: ${index * 0.12}s;">
+                    <h4 class="text-base font-bold pr-6 mb-3">${p.title}</h4>
+                    <a href="${p.url}" target="_blank" class="text-xs font-semibold text-indigo-500 bg-indigo-500/10 px-3 py-1 rounded-full inline-block">Ko'rish <i class="fa-solid fa-arrow-right text-[10px] ml-1"></i></a>
+                    <button type="button" onclick="deleteData('projects', ${p.id})" class="absolute top-6 right-6 opacity-30 hover:opacity-100 text-red-500 transition"><i class="fa-solid fa-trash"></i></button>
+                </div>`).join(''); 
+        }
+
+        function renderFinance() { 
+            document.getElementById('finance-grid').innerHTML = currentUser.data.finance.map(f => {
+                const isChiqim = f.type === 'Chiqim';
+                return `
+                <div class="card-modern p-6 relative group flex flex-col justify-center items-start">
+                    <div class="w-10 h-10 rounded-full flex items-center justify-center mb-3 ${isChiqim ? 'bg-red-500/15 text-red-500' : 'bg-green-500/15 text-green-500'}">
+                        <i class="fa-solid ${isChiqim ? 'fa-arrow-up' : 'fa-arrow-down'}"></i>
+                    </div>
+                    <h4 class="text-xs font-semibold opacity-60 uppercase tracking-wider">${f.title}</h4>
+                    <p class="text-2xl font-extrabold mt-1 ${isChiqim ? 'text-red-500' : 'text-green-500'}">${isChiqim ? '-' : '+'}${Number(f.amount).toLocaleString()}</p>
+                    <button type="button" onclick="deleteData('finance', ${f.id})" class="absolute top-6 right-6 opacity-30 hover:opacity-100 text-red-500 transition"><i class="fa-solid fa-trash"></i></button>
+                </div>`;
+            }).join(''); 
+        }
+
+        function renderHabits() { document.getElementById('habits-list').innerHTML = currentUser.data.habits.map(h => `<div class="card-modern p-5 flex justify-between items-center"><div class="flex items-center gap-4"><div class="w-10 h-10 rounded-full bg-indigo-500/15 flex items-center justify-center text-indigo-500"><i class="fa-solid fa-bell"></i></div><div><span class="block text-sm font-bold">${h.title}</span><span class="text-xs opacity-60">Har kuni: ${h.time} da</span></div></div><button type="button" onclick="deleteData('habits', ${h.id})" class="opacity-40 hover:opacity-100 text-red-500 p-2"><i class="fa-solid fa-trash"></i></button></div>`).join(''); }
+        function renderTasks() { document.getElementById('priority-tasks-list').innerHTML = currentUser.data.tasks.map(t => `<div class="card-modern p-4 flex justify-between items-center group"><div class="flex items-center gap-3"><div class="w-2 h-2 rounded-full bg-indigo-500"></div><span class="text-xs font-bold">${t.title} <span class="opacity-50 font-normal ml-1">(${t.time})</span></span></div><button type="button" onclick="deleteData('tasks', ${t.id})" class="opacity-30 hover:opacity-100 text-green-500 transition"><i class="fa-solid fa-check-circle text-lg"></i></button></div>`).join(''); }
+    </script>
+</body>
+</html>

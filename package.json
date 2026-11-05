@@ -1,0 +1,14 @@
+{
+  "name": "jarvis-bot",
+  "version": "1.0.0",
+  "main": "bot.js",
+  "scripts": {
+    "start": "node bot.js"
+  },
+  "dependencies": {
+    "node-telegram-bot-api": "^0.65.1",
+    "node-cron": "^3.0.3",
+    "@supabase/supabase-js": "^2.39.8",
+    "express": "^4.19.2"
+  }
+}
